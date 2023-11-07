@@ -1,0 +1,16 @@
+server:
+  port: 9001
+
+spring:
+  application:
+    name: nacos-payment-provider
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848   # 配置Nacos地址
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'  # Spring Actuator 监控，将所有可用的端点都公开出来，供外部访问。
