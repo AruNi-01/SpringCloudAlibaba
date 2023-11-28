@@ -1,0 +1,30 @@
+server:
+  port: 8401
+
+spring:
+  application:
+    name: sentinel-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848   # 配置Nacos地址
+
+    sentinel:
+      transport:
+        dashboard: localhost:8080   # 配置 Sentinel Dashboard 地址
+        port: 8719  # 默认 8719 端口，用于与 Sentinel Dashboard 交互
+      datasource:
+        ds1:
+          nacos:
+            server-addr: localhost:8848
+            namespace: public
+            data-id: cloudalibaba-sentinel-service
+            group-id: DEFAULT_GROUP
+            data-type: json
+            rule-type: flow   # 流控规则
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: '*'  # Spring Actuator 监控，将所有可用的端点都公开出来，供外部访问。
