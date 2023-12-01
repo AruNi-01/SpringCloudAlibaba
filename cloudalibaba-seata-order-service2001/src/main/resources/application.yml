@@ -1,0 +1,59 @@
+server:
+  port: 2001
+
+spring:
+  application:
+    name: seata-order-service
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8848
+    openfeign:
+      client:
+        config:
+          seata-account-service:  # 服务提供者名称
+            read-timeout: 3000    # 配置 seata-account-service 服务的请求超时时间为 3s
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/seata_order?useSSL=false&useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai
+    username: root
+    password: 123456
+
+seata:
+  # 自定义事务组名称需要与 seata 配置中心中的配置对应（service.vgroupMapping.aaryn_test_tx_group=default）
+  tx-service-group: aaryn_test_tx_group
+  service:
+    # 虚拟组和分组的映射
+    vgroup-mapping:
+      aaryn_test_tx_group: default
+#  enable-auto-data-source-proxy: true   # seata 自动代理数据源，从而管理事务（默认开启）
+  # 配置中心
+  config:
+    type: nacos
+    nacos:
+      server-addr: 127.0.0.1:8848
+      group: "SEATA_GROUP"
+      namespace: ""
+      dataId: "seataServer.properties"
+      username:
+      password:
+  # 注册中心
+  registry:
+    type: nacos
+    nacos:
+      application: seata-server
+      server-addr: 127.0.0.1:8848
+      group: "SEATA_GROUP"  # 请确保client与server的注册处于同一个namespace和group，不然会找不到服务。
+      namespace: ""
+      username:
+      password:
+
+logging:
+  level:
+    io:
+      seata: info
+
+mybatis:
+  mapperLocations: classpath:mapper/*.xml
+  configuration:
+    map-underscore-to-camel-case: true
